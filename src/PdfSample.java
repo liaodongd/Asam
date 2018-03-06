@@ -16,6 +16,7 @@ import java.io.IOException;
 
 /**
  * add some words to pdf file
+ * e.g:http://blog.csdn.net/zmx729618/article/details/52150123
  */
 public class PdfSample {
 
