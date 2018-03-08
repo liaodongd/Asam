@@ -19,6 +19,7 @@ import java.io.InputStreamReader;
 /**
  * add some words to pdf file
  * e.g:http://blog.csdn.net/zmx729618/article/details/52150123
+ * 通过用户输入的制图者与审核者的名字填写pdf表格内容
  */
 public class PdfSample {
 
