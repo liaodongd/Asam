@@ -10,9 +10,11 @@ import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * add some words to pdf file
@@ -21,25 +23,33 @@ import java.io.IOException;
 public class PdfSample {
 
 	public static void main(String[] args) throws Exception {
-		digui("d:/input");
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String ztName = null;
+		String shName = null;
+		System.out.println("Enter cartographer name :");
+		ztName = br.readLine();
+		System.out.println("Enter inspector name :");
+		shName = br.readLine();
+		digui("d:/input", ztName, shName);
 	}
 
-	private static void digui(String path1) throws IOException, DocumentException {
+	private static void digui(String path1,String ztName,String shName) throws IOException, DocumentException {
+
 		File root = new File(path1);  //这里写上发替换的文件夹路径,注意使用双斜杠
 		String[] files = root.list();
 		for (String file : files) {
 			File f1 = new File(path1 + "//" + file);//注意,这里一定要写成File(fl,file)如果写成File(file)是行不通的,一定要全路径
 			if (f1.isFile()) {
-				addText(f1);
+				addText(f1,ztName,shName);
 			}
 			if (f1.isDirectory()) {
 				new File("d:/output/" + file).mkdir();
-				digui(f1.getAbsolutePath());
+				digui(f1.getAbsolutePath(), ztName, shName);
 			}
 		}
 	}
 
-	private static void addText(File file) throws IOException, DocumentException {
+	private static void addText(File file,String ztName,String shName) throws IOException, DocumentException {
 		//创建一个pdf读入流
 		PdfReader reader = new PdfReader(file.getAbsolutePath());
 		//根据一个pdfreader创建一个pdfStamper.用来生成新的pdf.
@@ -74,13 +84,16 @@ public class PdfSample {
 			over.setFontAndSize(font.getBaseFont(), 10.5f);
 			//设置字体颜色
 			over.setColorFill(BaseColor.BLACK);
-			//设置字体的输出位置
-			over.setTextMatrix(51, 28.5f);
-			//要输出的text
-			over.showText("金雨奇");
-			over.setTextMatrix(321, 28.5f);
-			//要输出的text
-			over.showText("金雨奇");
+
+			//设置字体的输出位置及内容
+			if (ztName.length() != 0) {
+ 				over.setTextMatrix(51, 28.5f);
+				over.showText(ztName);
+			}
+			if (shName.length() != 0) {
+				over.setTextMatrix(321, 28.5f);
+				over.showText(shName);
+			}
 			over.endText();
 		}
 
