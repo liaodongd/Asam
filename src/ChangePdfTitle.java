@@ -31,6 +31,12 @@ public class ChangePdfTitle {
         String x1 = null;
         String y = null;
         String font1 = null;
+        String px = null;
+        String py = null;
+        System.out.println("Enter photo x :");
+        px = br.readLine();
+        System.out.println("Enter photo y :");
+        py = br.readLine();
         System.out.println("Enter content :");
         ztName = br.readLine();
 
@@ -57,28 +63,28 @@ public class ChangePdfTitle {
         }
 //        ztName = "六点多";
 //        type= "1";
-        digui("d:/input", ztName, type, x1, y, font1);
+        digui("d:/input", ztName, type, x1, y, font1, px, py);
     }
 
-    private static void digui(String path1, String ztName, String type, String
-        x1, String y, String font1) throws IOException, DocumentException {
+    private static void digui(String path1, String ztName, String type, String x1,
+                              String y, String font1, String px, String py) throws IOException, DocumentException {
 
         File root = new File(path1);  //这里写上发替换的文件夹路径,注意使用双斜杠
         String[] files = root.list();
         for (String file : files) {
             File f1 = new File(path1 + "//" + file);//注意,这里一定要写成File(fl,file)如果写成File(file)是行不通的,一定要全路径
             if (f1.isFile()) {
-                addText(f1, ztName, type, x1, y, font1);
+                addText(f1, ztName, type, x1, y, font1, px, py);
             }
             if (f1.isDirectory()) {
                 new File("d:/output/" + file).mkdir();
-                digui(f1.getAbsolutePath(), ztName, type, x1, y, font1);
+                digui(f1.getAbsolutePath(), ztName, type, x1, y, font1, px, py);
             }
         }
     }
 
     private static void addText(File file, String ztName, String type, String
-        x1, String y, String font1) throws IOException, DocumentException {
+        x1, String y, String font1, String px, String py) throws IOException, DocumentException {
         //创建一个pdf读入流
         PdfReader reader = new PdfReader(file.getAbsolutePath());
         //根据一个pdfreader创建一个pdfStamper.用来生成新的pdf.
@@ -117,7 +123,7 @@ public class ChangePdfTitle {
             //创建一个image对象.
             Image image = Image.getInstance("d:/output/1.png");
             //设置image对象的输出位置pa.getAsNumber(pa.size()-1).floatValue() 是该页pdf坐标轴的y轴的最大值
-            image.setAbsolutePosition(330, 492f);
+            image.setAbsolutePosition(Float.valueOf(px), Float.valueOf(py));
             over.addImage(image);
 
             //设置字体的输出位置及内容
